@@ -163,7 +163,7 @@ module.exports = [
     perms: ['ModerateMembers'],
     options: [int('caso', 'Número de caso', true, { min_value: 1 })],
     run: async (ctx) => {
-      const record = await db.Case.findOne({ guildId: ctx.guildId, caseId: ctx.int('caso'), type: 'warn' });
+      const record = await db.Case.findOne({ guildId: ctx.guildId, caseId: ctx.int('caso'), type: 'warn', active: true });
       if (!record) return ctx.err('No se encontró esa advertencia.');
       record.active = false;
       record.removedBy = ctx.userId;

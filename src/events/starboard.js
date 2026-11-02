@@ -11,6 +11,7 @@ async function updateStarboard(reaction, user) {
   if (reaction.partial) await reaction.fetch().catch(() => null);
   const message = reaction.message;
   if (!message?.guild) return;
+  if (message.partial) await message.fetch().catch(() => null);
   if (reaction.emoji.name !== STAR) return;
   const settings = await settingsService.get(message.guild.id).catch(() => null);
   if (!settings?.starboard?.enabled || !settings.starboard.channelId) return;
