@@ -8,6 +8,8 @@ module.exports = {
   token: process.env.DISCORD_TOKEN,
   clientId: process.env.CLIENT_ID,
   guildId: process.env.GUILD_ID || null,
+  // Registro automático de comandos slash al arrancar (DEPLOY_COMMANDS=false para desactivarlo)
+  deployCommands: String(process.env.DEPLOY_COMMANDS ?? 'true').toLowerCase() !== 'false',
   owners: list(process.env.OWNER_IDS),
   staffRoles: list(process.env.STAFF_ROLE_IDS),
   mongoUri: process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/ocaso-rp',

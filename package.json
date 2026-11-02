@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "node --watch index.js",
-    "deploy": "node deploy-commands.js",
+    "deploy": "node -e \"require('./src/core/loader').loadSystems({}); require('./src/core/deploy').deployCommands({ force: true }).then((r) => process.exit(r ? 0 : 1))\"",
     "systems": "node scripts/systems-doc.js",
     "check": "node scripts/check.js",
     "test": "node scripts/check.js && node scripts/smoke.js && node scripts/dispatch-test.js",

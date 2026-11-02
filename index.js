@@ -6,6 +6,7 @@ const client = require('./src/core/client');
 const config = require('./src/config');
 const logger = require('./src/utils/logger');
 const { loadSystems } = require('./src/core/loader');
+const { deployCommands } = require('./src/core/deploy');
 const registry = require('./src/core/registry');
 const { connect, disconnect } = require('./src/database/connect');
 
@@ -42,6 +43,7 @@ async function bootstrap() {
   for (const warning of registry.warnings) logger.warn(warning);
 
   await connect();
+  await deployCommands();
   loadEvents();
 
   await client.login(config.token);

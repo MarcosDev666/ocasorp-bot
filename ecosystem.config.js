@@ -11,3 +11,7 @@ module.exports = {
     time: true,
   }],
 };
+
+// Los comandos slash se registran solos al arrancar (index.js), sin pasos extra en el host.
+// Si tu hosting reinicia muy seguido y no querés ese PUT en cada arranque,
+// agregá DEPLOY_COMMANDS: 'false' dentro de `env` y corré `npm run deploy` cuando cambien los comandos.
