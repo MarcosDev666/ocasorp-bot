@@ -1,0 +1,35 @@
+services:
+  mongo:
+    image: mongo:7
+    container_name: ocasorp-mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_DATABASE: ocaso-rp
+    volumes:
+      - mongo_data:/data/db
+    ports:
+      - "27017:27017"
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  bot:
+    build: .
+    container_name: ocasorp-bot
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      MONGODB_URI: mongodb://mongo:27017
+      MONGODB_DB: ocaso-rp
+    depends_on:
+      mongo:
+        condition: service_healthy
+    volumes:
+      - transcripts:/app/transcripts
+
+volumes:
+  mongo_data:
+  transcripts:
