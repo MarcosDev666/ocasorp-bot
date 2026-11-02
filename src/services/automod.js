@@ -77,6 +77,7 @@ function inspect(message, settings) {
       if (prev.count >= (cfg.flood.max || 5)) violations.push('flood');
     } else {
       floodCache.set(key, { content: lower, count: 1, at: Date.now() });
+      if (floodCache.size > 5000) floodCache.clear();
     }
   }
   if (cfg.spam?.enabled) {
@@ -86,6 +87,7 @@ function inspect(message, settings) {
     const arr = (spamCache.get(key) || []).filter((t) => now - t < windowMs);
     arr.push(now);
     spamCache.set(key, arr);
+    if (spamCache.size > 5000) spamCache.clear();
     if (arr.length >= (cfg.spam.threshold || 6)) violations.push('spam');
   }
   if (!content && message.attachments.size > 3) violations.push('attachments');
