@@ -68,12 +68,14 @@ npm install
 cp .env.example .env
 # Editá .env con tu token, client ID y URI de MongoDB
 
-# 4. Registrar los comandos slash
-npm run deploy
-
-# 5. Iniciar el bot
+# 4. Iniciar el bot (registra los comandos slash solo, en cada arranque)
 npm start
 ```
+
+> 🚀 **Pensado para hostings**: no hace falta un paso aparte para los comandos slash. `index.js` los registra
+> automáticamente antes de conectarse, así que con `npm start` (o el comando de inicio del panel del hosting) alcanza.
+> Si preferís que no los registre en cada reinicio, poné `DEPLOY_COMMANDS=false` en el `.env` y ejecutá
+> `npm run deploy` solo cuando cambien los comandos.
 
 > 💡 Para desarrollo usá `npm run dev` (recarga automática con `node --watch`).
 
@@ -101,6 +103,7 @@ docker run -d --name ocasorp-mongo -p 27017:27017 -v ocasorp_mongo:/data/db mong
 | `DISCORD_TOKEN` | ✅ | Token del bot (Developer Portal → Bot → Reset Token) |
 | `CLIENT_ID` | ✅ | ID de la aplicación (Developer Portal → General Information) |
 | `GUILD_ID` | ❌ | ID del servidor de pruebas. Si se define, los comandos se registran al instante en ese servidor |
+| `DEPLOY_COMMANDS` | ❌ | `false` para que el bot **no** registre los comandos en cada arranque (por defecto los registra) |
 | `MONGODB_URI` | ✅ | URI de conexión a MongoDB |
 | `MONGODB_DB` | ❌ | Nombre de la base de datos (por defecto `ocaso-rp`) |
 | `OWNER_IDS` | ❌ | IDs de dueños del bot separados por coma (acceso a comandos `ownerOnly`) |
@@ -134,13 +137,13 @@ docker run -d --name ocasorp-mongo -p 27017:27017 -v ocasorp_mongo:/data/db mong
 
 ```
 ocasorp-bot/
-├── index.js                  # Punto de entrada: carga sistemas, conecta Mongo y login
-├── deploy-commands.js        # Registro de comandos slash (global o por servidor)
+├── index.js                  # Punto de entrada: carga sistemas, registra comandos, conecta Mongo y login
 ├── src/
 │   ├── config.js             # Configuración desde .env
 │   ├── core/
 │   │   ├── client.js         # Cliente de Discord (intents, partials, colecciones)
 │   │   ├── context.js        # Contexto de comando: opciones, respuestas, confirmaciones
+│   │   ├── deploy.js         # Registro de comandos slash (global o por servidor)
 │   │   ├── loader.js         # Carga automática de los sistemas
 │   │   ├── registry.js       # Registro, validación y agrupación de comandos
 │   │   └── permissions.js    # Comprobación de permisos y staff
@@ -185,7 +188,7 @@ module.exports = [
 ];
 ```
 
-El loader lo detecta automáticamente, `/sistemas` lo lista y `npm run deploy` lo publica.  
+El loader lo detecta automáticamente, `/sistemas` lo lista y se publica solo en el próximo arranque del bot.  
 Si el nombre tiene un espacio (`ticket panel`), se registra como subcomando del grupo `ticket`.
 
 ---
@@ -194,9 +197,9 @@ Si el nombre tiene un espacio (`ticket panel`), se registra como subcomando del 
 
 | Comando | Qué hace |
 | --- | --- |
-| `npm start` | Inicia el bot |
+| `npm start` | Inicia el bot y registra los comandos slash |
 | `npm run dev` | Inicia con recarga automática |
-| `npm run deploy` | Registra/actualiza los comandos slash |
+| `npm run deploy` | Fuerza el registro de comandos sin iniciar el bot |
 | `npm test` | Validación de comandos + pruebas de servicios + dispatcher |
 | `npm run lint` | ESLint (`no-undef`, `no-unused-vars`, reglas de seguridad) |
 | `npm run systems` | Regenera `SYSTEMS.md` a partir del código |
@@ -277,7 +280,7 @@ los valida antes de ejecutar con mensajes de error claros.
 
 | Problema | Solución |
 | --- | --- |
-| Los comandos no aparecen | Ejecutá `npm run deploy`. Si son globales, esperá hasta 1 hora. Configurá `GUILD_ID` para pruebas instantáneas. |
+| Los comandos no aparecen | Reiniciá el bot (los registra al arrancar) o corré `npm run deploy`. Si son globales, esperá hasta 1 hora; configurá `GUILD_ID` para que sea instantáneo. |
 | El bot se desconecta al iniciar | Revisá el token y que los intents privilegiados estén activados. |
 | "Missing Permissions" | Verificá que el rol del bot esté por encima de los roles que intenta gestionar. |
 | AutoMod no borra mensajes | Requiere **Message Content Intent**. Revisá que `/automod configurar activar:true`. |
