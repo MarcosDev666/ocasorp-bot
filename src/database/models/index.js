@@ -1,0 +1,27 @@
+'use strict';
+
+module.exports = {
+  Guild: require('./Guild'),
+  User: require('./User'),
+  Ticket: require('./Ticket'),
+  Case: require('./Case'),
+  Giveaway: require('./Giveaway'),
+  ReactionRole: require('./ReactionRole'),
+  Suggestion: require('./Suggestion'),
+  Poll: require('./Poll'),
+  Application: require('./Application'),
+  Report: require('./Report'),
+  CommunityEvent: require('./CommunityEvent'),
+  Reminder: require('./Reminder'),
+  CustomCommand: require('./CustomCommand'),
+  AutoResponder: require('./AutoResponder'),
+  SampProfile: require('./SampProfile'),
+  Faction: require('./Faction'),
+  Property: require('./Property'),
+  TempChannel: require('./TempChannel'),
+  StarboardPost: require('./StarboardPost'),
+  AutomodLog: require('./AutomodLog'),
+  ShopItem: require('./ShopItem'),
+  Confession: require('./Confession'),
+  Feedback: require('./Feedback'),
+};

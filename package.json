@@ -1,0 +1,39 @@
+{
+  "name": "ocasorp-bot",
+  "version": "1.0.0",
+  "description": "Bot de Discord completo para Ocaso Roleplay (SA-MP): 230 sistemas, discord.js v14 y MongoDB.",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js",
+    "deploy": "node deploy-commands.js",
+    "systems": "node scripts/systems-doc.js",
+    "check": "node scripts/check.js",
+    "test": "node scripts/check.js && node scripts/smoke.js && node scripts/dispatch-test.js",
+    "lint": "eslint ."
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "samp",
+    "roleplay",
+    "ocaso",
+    "mongodb",
+    "discord.js"
+  ],
+  "author": "Ocaso Roleplay",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "discord.js": "^14.28.0",
+    "dotenv": "^18.0.9",
+    "mongoose": "^8.24.7"
+  },
+  "devDependencies": {
+    "eslint": "^10.14.0",
+    "globals": "^17.14.0"
+  }
+}
